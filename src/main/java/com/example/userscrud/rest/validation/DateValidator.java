@@ -1,5 +1,6 @@
 package com.example.userscrud.rest.validation;
 
+import com.example.userscrud.exception.UserValidationException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,9 +20,9 @@ public class DateValidator implements ConstraintValidator<DateConstraint, LocalD
     @Override
     public boolean isValid(LocalDate birthDate, ConstraintValidatorContext context) {
         if (birthDate.isAfter(LocalDate.now())) {
-            throw new IllegalArgumentException("Value must be earlier than current");
+            throw new UserValidationException("Value must be earlier than current");
         } if (Period.between(birthDate, LocalDate.now()).getYears() < userMinAge) {
-            throw new IllegalArgumentException(String.format("User must be %s years old", userMinAge));
+            throw new UserValidationException(String.format("User must be %s years old", userMinAge));
         }
         return true;
     }

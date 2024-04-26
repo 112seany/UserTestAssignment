@@ -1,5 +1,6 @@
 package com.example.userscrud.rest.validation;
 
+import com.example.userscrud.exception.UserValidationException;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
@@ -14,6 +15,9 @@ public class EmailValidator implements ConstraintValidator<EmailConstraint, Stri
 
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
-        return email.matches(EMAIL_REGEX);
+        if(!email.matches(EMAIL_REGEX)) {
+            throw new UserValidationException(String.format("Invalid email %s", email));
+        }
+        return true;
     }
 }
