@@ -1,5 +1,6 @@
 package com.example.userscrud.advice;
 
+import com.example.userscrud.exception.UserNotFoundException;
 import com.example.userscrud.exception.UserValidationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,12 @@ public class UserControllerAdvice {
 
     @ExceptionHandler(UserValidationException.class)
     public ResponseEntity<Response> handleUserValidatingException(UserValidationException e) {
+        Response response = new Response(e.getMessage());
+        return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(UserNotFoundException.class)
+    public ResponseEntity<Response> handleUserValidatingException(UserNotFoundException e) {
         Response response = new Response(e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
