@@ -14,13 +14,10 @@ public class DateValidator implements ConstraintValidator<DateConstraint, LocalD
     private int userMinAge;
 
     @Override
-    public void initialize(DateConstraint birthDate) {
-    }
-
-    @Override
     public boolean isValid(LocalDate birthDate, ConstraintValidatorContext context) {
         if (birthDate.isAfter(LocalDate.now())) {
             throw new UserValidationException("Value must be earlier than current");
+
         } if (Period.between(birthDate, LocalDate.now()).getYears() < userMinAge) {
             throw new UserValidationException(String.format("User must be %s years old", userMinAge));
         }

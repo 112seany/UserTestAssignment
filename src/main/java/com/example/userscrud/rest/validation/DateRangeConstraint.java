@@ -11,7 +11,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DateRangeConstraint {
 
-    String message() default "";
+    String message() default "Date range constraint validation failed";
 
     Class<?>[] groups() default {};
 

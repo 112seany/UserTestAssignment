@@ -6,7 +6,7 @@ import com.example.userscrud.exception.UserNotFoundException;
 import com.example.userscrud.mapper.UserMapper;
 import com.example.userscrud.repository.UserRepository;
 import com.example.userscrud.rest.request.FindUsersFilter;
-import com.example.userscrud.rest.request.UserCreateRequest;
+import com.example.userscrud.rest.request.UserCreateOrUpdateRequest;
 import com.example.userscrud.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -23,24 +23,24 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
 
     @Override
-    public UserDto createOrFullUpdateUser(UserCreateRequest userCreateRequest) {
-        UserEntity entity = userRepository.findByEmail(userCreateRequest.getEmail());
+    public UserDto createOrFullUpdateUser(UserCreateOrUpdateRequest userCreateOrUpdateRequest) {
+        UserEntity entity = userRepository.findByEmail(userCreateOrUpdateRequest.getEmail());
 
         if (Objects.isNull(entity)) {
-            UserEntity entityToSave = userMapper.mapUserCreateRequestToUserEntity(userCreateRequest);
+            UserEntity entityToSave = userMapper.mapUserCreateRequestToUserEntity(userCreateOrUpdateRequest);
             return userMapper.mapToDto(userRepository.save(entityToSave));
         }
 
-        UserEntity entityToSave = userMapper.mapEntityToUpdate(userCreateRequest, entity.getId());
+        UserEntity entityToSave = userMapper.mapToEntity(userCreateOrUpdateRequest, entity.getId());
 
         return userMapper.mapToDto(userRepository.save(entityToSave));
     }
 
     @Override
-    public UserDto partialUpdateUser(UserCreateRequest userCreateOrUpdateRequest, Long id) {
-        UserEntity userEntity = checkIfUserExists(id);
+    public UserDto partialUpdateUser(UserCreateOrUpdateRequest userCreateOrUpdateRequest, Long id) {
+        userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
-        UserEntity entityToUpdate = userMapper.mapEntityToUpdate(userCreateOrUpdateRequest, id);
+        UserEntity entityToUpdate = userMapper.mapToEntity(userCreateOrUpdateRequest, id);
 
         return userMapper.mapToDto(userRepository.save(entityToUpdate));
     }
@@ -52,14 +52,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<UserDto> findUsers(FindUsersFilter findUsersFilter) {
-        return userMapper.mapToDtoList(userRepository.findByBirthDateBetween(findUsersFilter.getFromDate(), findUsersFilter.getToDate()));
-    }
-
-    private UserEntity checkIfUserExists(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> {
-                    return new UserNotFoundException(id);
-                });
+        return userMapper.mapToDto(userRepository.findByBirthDateBetween(findUsersFilter.getFromDate(), findUsersFilter.getToDate()));
     }
 }
 

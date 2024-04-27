@@ -16,10 +16,10 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserCreateRequest {
+public class UserCreateOrUpdateRequest {
 
     @EmailConstraint
-    @NotBlank(message = "Email name should not be null")
+    @NotBlank(message = "Email should not be null")
     private String email;
 
     @NotBlank(message = "First name should not be null")

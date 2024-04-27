@@ -12,6 +12,6 @@ public class DateRangeValidator implements ConstraintValidator<DateRangeConstrai
         if (value.getFromDate().isBefore(value.getToDate())) {
             return true;
         }
-        throw new UserValidationException("Date 'from' should be less that date 'to'");
+        throw new UserValidationException("Date 'from' should be less than date 'to'");
     }
 }

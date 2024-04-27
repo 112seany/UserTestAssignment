@@ -2,7 +2,7 @@ package com.example.userscrud.rest;
 
 import com.example.userscrud.dto.UserDto;
 import com.example.userscrud.rest.request.FindUsersFilter;
-import com.example.userscrud.rest.request.UserCreateRequest;
+import com.example.userscrud.rest.request.UserCreateOrUpdateRequest;
 import com.example.userscrud.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -13,28 +13,29 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/api/users")
+@RequestMapping("/users")
 public class UserController {
 
-    private final UserService usersService;
+    private final UserService userService;
 
     @PutMapping
-    public ResponseEntity<UserDto> createOrFullUpdateUser(@RequestBody @Valid UserCreateRequest userCreateRequest) {
-        return ResponseEntity.ok(usersService.createOrFullUpdateUser(userCreateRequest));
+    public ResponseEntity<UserDto> createOrUpdateUser(@RequestBody @Valid UserCreateOrUpdateRequest userCreateOrUpdateRequest) {
+        return ResponseEntity.ok(userService.createOrFullUpdateUser(userCreateOrUpdateRequest));
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserDto> partialUpdateUser(@RequestBody @Valid UserCreateRequest userUpdateRequest, @PathVariable(value = "id") Long id) {
-        return ResponseEntity.ok(usersService.partialUpdateUser(userUpdateRequest,id));
+    public ResponseEntity<UserDto> partialUpdateUser(@RequestBody @Valid UserCreateOrUpdateRequest userUpdateRequest, @PathVariable(value = "id") Long id) {
+        return ResponseEntity.ok(userService.partialUpdateUser(userUpdateRequest,id));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable(value = "id") Long id) {
+        userService.deleteUser(id);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
     public ResponseEntity<List<UserDto>> findUsers(@RequestBody @Valid FindUsersFilter findUsersFilter) {
-        return ResponseEntity.ok(usersService.findUsers(findUsersFilter));
+        return ResponseEntity.ok(userService.findUsers(findUsersFilter));
     }
 }

@@ -10,10 +10,6 @@ public class EmailValidator implements ConstraintValidator<EmailConstraint, Stri
             + "[^-][\\p{L}0-9-]+(\\.[\\p{L}0-9-]+)*(\\.[\\p{L}]{2,})$";
 
     @Override
-    public void initialize(EmailConstraint constraintAnnotation) {
-    }
-
-    @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
         if(!email.matches(EMAIL_REGEX)) {
             throw new UserValidationException(String.format("Invalid email %s", email));
