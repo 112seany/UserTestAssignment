@@ -1,5 +1,6 @@
 package com.example.userscrud.rest;
 
+import com.example.userscrud.dto.UserDto;
 import com.example.userscrud.rest.request.UserCreateRequest;
 import com.example.userscrud.service.UserService;
 import jakarta.validation.Valid;
@@ -15,7 +16,7 @@ public class UserController {
     private final UserService usersService;
 
     @PutMapping
-    public ResponseEntity<?> createUser(@RequestBody @Valid UserCreateRequest createRequest) {
-        return ResponseEntity.ok(createRequest);
+    public ResponseEntity<UserDto> createOrUpdateUser(@RequestBody @Valid UserCreateRequest userCreateRequest) {
+        return ResponseEntity.ok(usersService.createOrUpdateUser(userCreateRequest));
     }
 }
