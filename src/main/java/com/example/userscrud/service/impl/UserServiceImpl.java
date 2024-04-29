@@ -7,6 +7,7 @@ import com.example.userscrud.mapper.UserMapper;
 import com.example.userscrud.repository.UserRepository;
 import com.example.userscrud.rest.request.FindUsersFilter;
 import com.example.userscrud.rest.request.UserCreateOrUpdateRequest;
+import com.example.userscrud.rest.request.UserPartialUpdateRequest;
 import com.example.userscrud.service.UserService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -37,12 +38,12 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDto partialUpdateUser(UserCreateOrUpdateRequest userCreateOrUpdateRequest, Long id) {
-        userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
+    public UserDto partialUpdateUser(UserPartialUpdateRequest userUpdateRequest, Long id) {
+        UserEntity entityToUpdate = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(id));
 
-        UserEntity entityToUpdate = userMapper.mapToEntity(userCreateOrUpdateRequest, id);
+        UserEntity updatedEntity = userMapper.updateEntity(userUpdateRequest, entityToUpdate);
 
-        return userMapper.mapToDto(userRepository.save(entityToUpdate));
+        return userMapper.mapToDto(userRepository.save(updatedEntity));
     }
 
     @Override

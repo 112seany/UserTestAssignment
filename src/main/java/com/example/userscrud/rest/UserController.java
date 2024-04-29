@@ -3,6 +3,7 @@ package com.example.userscrud.rest;
 import com.example.userscrud.dto.UserDto;
 import com.example.userscrud.rest.request.FindUsersFilter;
 import com.example.userscrud.rest.request.UserCreateOrUpdateRequest;
+import com.example.userscrud.rest.request.UserPartialUpdateRequest;
 import com.example.userscrud.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -24,7 +25,7 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public ResponseEntity<UserDto> partialUpdateUser(@RequestBody @Valid UserCreateOrUpdateRequest userUpdateRequest, @PathVariable(value = "id") Long id) {
+    public ResponseEntity<UserDto> partialUpdateUser(@RequestBody @Valid UserPartialUpdateRequest userUpdateRequest, @PathVariable(value = "id") Long id) {
         return ResponseEntity.ok(userService.partialUpdateUser(userUpdateRequest,id));
     }
 

@@ -7,9 +7,11 @@ import java.lang.annotation.*;
 
 @Documented
 @Constraint(validatedBy = DateValidator.class)
-@Target( { ElementType.FIELD })
+@Target({ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface DateConstraint {
+
+    boolean allowsNull() default false;
 
     String message() default "Date constraint validation failed";
 
