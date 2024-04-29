@@ -3,7 +3,6 @@ package com.example.userscrud.service;
 import com.example.userscrud.dto.UserDto;
 import com.example.userscrud.entity.UserEntity;
 import com.example.userscrud.exception.UserNotFoundException;
-import com.example.userscrud.helper.TestHelper;
 import com.example.userscrud.mapper.UserMapper;
 import com.example.userscrud.repository.UserRepository;
 import com.example.userscrud.rest.request.FindUsersFilter;
@@ -144,5 +143,4 @@ public class UserServiceImplTest {
         verify(userRepository).findByBirthDateBetween(findUsersFilter.getFromDate(), findUsersFilter.getToDate());
         verify(userMapper).mapToDto(List.of(entity));
     }
-
 }

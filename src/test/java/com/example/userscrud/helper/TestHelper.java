@@ -20,7 +20,6 @@ public class TestHelper {
 
     public static final String USER_NOT_FOUND_EXCEPTION_MESSAGE = "User with id 1 was not found";
 
-
     public static UserEntity getUserEntity() {
         return UserEntity.builder()
                 .id(ID)
